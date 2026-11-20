@@ -51,17 +51,17 @@ Tubes---MLL---Warnet/
    git clone https://github.com/AchmadTS/Tubes---MLL---Warnet.git
    cd Tubes---MLL---Warnet
    ```
-2. Buka file **`src/Warnet.cbp`** di **Code::Blocks**.
-3. Tekan **`F9`** (*Build and Run*) untuk menjalankan program.
+2. Buka file **`src/Warnet.cbp`** di **Code::Blocks**
+3. Tekan **`F9`** (*Build and Run*) untuk menjalankan program
 
 > [!TIP]
-> Buka proyek langsung lewat file `Warnet.cbp` (bukan buka file `.cpp` satuan) supaya `ADT.h`, `MLL.cpp`, dan `main.cpp` otomatis ter-*link* saat di-*compile*.
+> Buka proyek langsung lewat file `Warnet.cbp` (bukan buka file `.cpp` satuan) supaya `ADT.h`, `MLL.cpp`, dan `main.cpp` otomatis ter-*link* saat di-*compile*
 
-## 👥 Tim Penyusun
+## 👥 Anggota Kelompok
 
-**Kelas SE-49-01 — S1 Rekayasa Perangkat Lunak, Telkom University**
+**Kelas SE-49-01 - S1 Rekayasa Perangkat Lunak, Telkom University**
 
 | Nama | NIM | Tugas |
 | :--- | :--- | :--- |
-| **Achmad Tirto Sudiro** (`@AchmadTS`) | `103022530029` | Desain Arsitektur MLL, Pseudocode, & Header (`ADT.h`) |
 | **Muhammad Syahrul Ihsan** (`@pukislukis`) | `103022500063` | Implementasi Primitif (`MLL.cpp`) & `main.cpp` |
+| **Achmad Tirto Sudiro** (`@AchmadTS`) | `103022530029` | Desain Arsitektur MLL, Pseudocode, & Header (`ADT.h`) |
