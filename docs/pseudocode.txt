@@ -30,3 +30,107 @@ type Elm_Komputer <
 type List_Warnet <
     first : Adr_Komputer
 >
+
+
+// =========================================================
+// OPERASI WAJIB MLL (1-TO-N)
+// =========================================================
+
+// --- INISIALISASI & OPERASI PARENT (KOMPUTER) ---
+
+Procedure createList(In/Out L : List_Warnet)
+Kamus
+    -
+Algoritma
+    L.first = NIL
+Endprocedure
+
+Function createParent(idPC, namaPC, tipe : string, tarifPerJam : integer, status : string) -> Adr_Komputer
+Kamus
+    P : Adr_Komputer
+Algoritma
+    allocate(P)
+    P->info.idPC        = idPC
+    P->info.namaPC      = namaPC
+    P->info.tipe        = tipe
+    P->info.tarifPerJam = tarifPerJam
+    P->info.status      = status
+    P->nextBilling      = NIL
+    P->next             = NIL
+    return P
+Endfunction
+
+Function findParent(L : List_Warnet, idPC : string) -> Adr_Komputer
+Kamus
+    P : Adr_Komputer
+Algoritma
+    P = L.first
+    while P != NIL and P->info.idPC != idPC do
+        P = P->next
+    endwhile
+    return P
+Endfunction
+
+Procedure insertParent(In/Out L : List_Warnet, In P : Adr_Komputer)
+Kamus
+    Q : Adr_Komputer
+Algoritma
+    if findParent(L, P->info.idPC) != NIL then
+        output("ID Komputer sudah terdaftar")
+    else
+        if L.first == NIL then
+            L.first = P
+        else
+            Q = L.first
+            while Q->next != NIL do
+                Q = Q->next
+            endwhile
+            Q->next = P
+        endif
+    endif
+Endprocedure
+
+Procedure deleteParent(In/Out L : List_Warnet, In idPC : string)
+Kamus
+    P, prec : Adr_Komputer
+    C       : Adr_Billing
+Algoritma
+    P = findParent(L, idPC)
+    if P == NIL then
+        output("Komputer tidak ditemukan")
+    else
+        while P->nextBilling != NIL do
+            C = P->nextBilling
+            P->nextBilling = C->next
+            C->next = NIL
+            deallocate(C)
+        endwhile
+
+        if P == L.first then
+            L.first = P->next
+        else
+            prec = L.first
+            while prec->next != P do
+                prec = prec->next
+            endwhile
+            prec->next = P->next
+        endif
+        P->next = NIL
+        deallocate(P)
+    endif
+Endprocedure
+
+Procedure printParent(L : List_Warnet)
+Kamus
+    P : Adr_Komputer
+Algoritma
+    if L.first == NIL then
+        output("Data komputer kosong")
+    else
+        P = L.first
+        while P != NIL do
+            output(P->info.idPC, P->info.namaPC, P->info.tipe, P->info.tarifPerJam, P->info.status)
+            P = P->next
+        endwhile
+    endif
+Endprocedure
