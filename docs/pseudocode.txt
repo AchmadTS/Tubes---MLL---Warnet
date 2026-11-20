@@ -39,6 +39,10 @@ type List_Warnet <
 // --- INISIALISASI & OPERASI PARENT (KOMPUTER) ---
 
 Procedure createList(In/Out L : List_Warnet)
+{
+    I.S. : Terdefinisi List_Warnet L sembarang
+    F.S. : Terbentuk List_Warnet L kosong (L.first = NIL)
+}
 Kamus
     -
 Algoritma
@@ -46,6 +50,10 @@ Algoritma
 Endprocedure
 
 Function createKomputer(idPC, namaPC, tipe : string, tarifPerJam : integer, status : string) -> Adr_Komputer
+{
+    I.S. : Terdefinisi idPC, namaPC, tipe, tarifPerJam, dan status
+    F.S. : Mengembalikan alamat elemen komputer baru yang sudah dialokasi dengan info sesuai parameter, serta nextBilling = NIL dan next = NIL
+}
 Kamus
     K : Adr_Komputer
 Algoritma
@@ -61,6 +69,10 @@ Algoritma
 Endfunction
 
 Function findKomputer(L : List_Warnet, idPC : string) -> Adr_Komputer
+{
+    I.S. : Terdefinisi List_Warnet L yang mungkin kosong, dan idPC
+    F.S. : Mengembalikan alamat elemen komputer dengan idPC yang sesuai pada L, atau NIL jika tidak ditemukan
+}
 Kamus
     K : Adr_Komputer
 Algoritma
@@ -72,6 +84,10 @@ Algoritma
 Endfunction
 
 Procedure insertKomputer(In/Out L : List_Warnet, In K : Adr_Komputer)
+{
+    I.S. : Terdefinisi List_Warnet L yang mungkin kosong, dan K sudah dialokasi
+    F.S. : K ditambahkan sebagai elemen terakhir pada L jika idPC belum terdaftar, jika sudah terdaftar, tampilkan pesan "ID Komputer sudah terdaftar"
+}
 Kamus
     Q : Adr_Komputer
 Algoritma
@@ -90,7 +106,11 @@ Algoritma
     endif
 Endprocedure
 
-Procedure deleteKomputer(In/Out L : List_Warnet, in idPC : string)
+Procedure deleteKomputer(In/Out L : List_Warnet, In idPC : string)
+{
+    I.S. : Terdefinisi List_Warnet L yang mungkin kosong, dan idPC
+    F.S. : Jika idPC ditemukan, seluruh node billing pada komputer tersebut beserta node komputernya dihapus dan didealokasi, jika tidak ditemukan, tampilkan pesan "Komputer tidak ditemukan"
+}
 Kamus
     K, prec : Adr_Komputer
     B       : Adr_Billing
@@ -120,7 +140,11 @@ Algoritma
     endif
 Endprocedure
 
-Procedure printKomputer(L : List_Warnet)
+Procedure printKomputer(In L : List_Warnet)
+{
+    I.S. : Terdefinisi List_Warnet L yang mungkin kosong
+    F.S. : Seluruh data komputer pada L ditampilkan ke layar, atau tampilkan pesan "Data komputer kosong" jika L kosong
+}
 Kamus
     K : Adr_Komputer
 Algoritma
@@ -139,6 +163,10 @@ Endprocedure
 // --- OPERASI CHILD (BILLING) ---
 
 Function createBilling(idBilling, namaUser, jamMulai : string, durasi : integer) -> Adr_Billing
+{
+    I.S. : Terdefinisi idBilling, namaUser, jamMulai, dan durasi
+    F.S. : Mengembalikan alamat elemen billing baru yang telah dialokasi dengan info sesuai parameter, totalBayar = 0, dan next = NIL
+}
 Kamus
     B : Adr_Billing
 Algoritma
@@ -153,6 +181,10 @@ Algoritma
 Endfunction
 
 Function findBilling(K : Adr_Komputer, idBilling : string) -> Adr_Billing
+{
+    I.S. : Terdefinisi K yang mungkin NIL, dan idBilling
+    F.S. : Mengembalikan alamat elemen billing dengan idBilling yang sesuai pada komputer K, atau NIL jika K = NIL atau data tidak ditemukan
+}
 Kamus
     B : Adr_Billing
 Algoritma
@@ -168,6 +200,10 @@ Algoritma
 Endfunction
 
 Procedure insertBilling(In/Out K : Adr_Komputer, In B : Adr_Billing)
+{
+    I.S. : Terdefinisi K yang mungkin NIL, dan B sudah dialokasi
+    F.S. : Jika K != NIL dan idBilling belum terdaftar, totalBayar B dihitung (durasi * tarifPerJam) dan B ditambahkan sebagai elemen terakhir pada list billing K, jika tidak valid, tampilkan pesan error
+}
 Kamus
     Q : Adr_Billing
 Algoritma
@@ -190,6 +226,10 @@ Algoritma
 Endprocedure
 
 Procedure deleteBilling(In/Out K : Adr_Komputer, In idBilling : string)
+{
+    I.S. : Terdefinisi K yang mungkin NIL, dan idBilling
+    F.S. : Jika K != NIL dan idBilling ditemukan, node billing tersebut dihapus dari list billing K dan didealokasi, jika tidak ditemukan, tampilkan pesan error
+}
 Kamus
     B, prec : Adr_Billing
 Algoritma
@@ -215,7 +255,11 @@ Algoritma
     endif
 Endprocedure
 
-Procedure printBilling(K : Adr_Komputer)
+Procedure printBilling(In K : Adr_Komputer)
+{
+    I.S. : Terdefinisi K yang mungkin NIL
+    F.S. : Seluruh riwayat billing pada komputer K ditampilkan ke layar, atau tampilkan pesan jika komputer tidak ditemukan atau riwayat kosong
+}
 Kamus
     B : Adr_Billing
 Algoritma
@@ -235,7 +279,11 @@ Endprocedure
 
 // --- OPERASI PRINT KESELURUHAN ---
 
-Procedure printAll(L : List_Warnet)
+Procedure printAll(In L : List_Warnet)
+{
+    I.S. : Terdefinisi List_Warnet L yang mungkin kosong
+    F.S. : Seluruh data komputer beserta masing-masing riwayat billing-nya ditampilkan ke layar, atau tampilkan pesan "Data warnet kosong" jika L kosong
+}
 Kamus
     K : Adr_Komputer
 Algoritma
