@@ -45,92 +45,92 @@ Algoritma
     L.first = NIL
 Endprocedure
 
-Function createParent(idPC, namaPC, tipe : string, tarifPerJam : integer, status : string) -> Adr_Komputer
+Function createKomputer(idPC, namaPC, tipe : string, tarifPerJam : integer, status : string) -> Adr_Komputer
 Kamus
-    P : Adr_Komputer
+    K : Adr_Komputer
 Algoritma
-    allocate(P)
-    P->info.idPC        = idPC
-    P->info.namaPC      = namaPC
-    P->info.tipe        = tipe
-    P->info.tarifPerJam = tarifPerJam
-    P->info.status      = status
-    P->nextBilling      = NIL
-    P->next             = NIL
-    return P
+    allocate(K)
+    K->info.idPC        = idPC
+    K->info.namaPC      = namaPC
+    K->info.tipe        = tipe
+    K->info.tarifPerJam = tarifPerJam
+    K->info.status      = status
+    K->nextBilling      = NIL
+    K->next             = NIL
+    return K
 Endfunction
 
-Function findParent(L : List_Warnet, idPC : string) -> Adr_Komputer
+Function findKomputer(L : List_Warnet, idPC : string) -> Adr_Komputer
 Kamus
-    P : Adr_Komputer
+    K : Adr_Komputer
 Algoritma
-    P = L.first
-    while P != NIL and P->info.idPC != idPC do
-        P = P->next
+    K = L.first
+    while K != NIL and K->info.idPC != idPC do
+        K = K->next
     endwhile
-    return P
+    return K
 Endfunction
 
-Procedure insertParent(In/Out L : List_Warnet, In P : Adr_Komputer)
+Procedure insertKomputer(In/Out L : List_Warnet, In K : Adr_Komputer)
 Kamus
     Q : Adr_Komputer
 Algoritma
-    if findParent(L, P->info.idPC) != NIL then
+    if findKomputer(L, K->info.idPC) != NIL then
         output("ID Komputer sudah terdaftar")
     else
         if L.first == NIL then
-            L.first = P
+            L.first = K
         else
             Q = L.first
             while Q->next != NIL do
                 Q = Q->next
             endwhile
-            Q->next = P
+            Q->next = K
         endif
     endif
 Endprocedure
 
-Procedure deleteParent(In/Out L : List_Warnet, In idPC : string)
+Procedure deleteKomputer(In/Out L : List_Warnet, in idPC : string)
 Kamus
-    P, prec : Adr_Komputer
-    C       : Adr_Billing
+    K, prec : Adr_Komputer
+    B       : Adr_Billing
 Algoritma
-    P = findParent(L, idPC)
-    if P == NIL then
+    K = findKomputer(L, idPC)
+    if K == NIL then
         output("Komputer tidak ditemukan")
     else
-        while P->nextBilling != NIL do
-            C = P->nextBilling
-            P->nextBilling = C->next
-            C->next = NIL
-            deallocate(C)
+        while K->nextBilling != NIL do
+            B = K->nextBilling
+            K->nextBilling = B->next
+            B->next = NIL
+            deallocate(B)
         endwhile
 
-        if P == L.first then
-            L.first = P->next
+        if K == L.first then
+            L.first = K->next
         else
             prec = L.first
-            while prec->next != P do
+            while prec->next != K do
                 prec = prec->next
             endwhile
-            prec->next = P->next
+            prec->next = K->next
         endif
-        P->next = NIL
-        deallocate(P)
+        K->next = NIL
+        deallocate(K)
     endif
 Endprocedure
 
-Procedure printParent(L : List_Warnet)
+Procedure printKomputer(L : List_Warnet)
 Kamus
-    P : Adr_Komputer
+    K : Adr_Komputer
 Algoritma
     if L.first == NIL then
         output("Data komputer kosong")
     else
-        P = L.first
-        while P != NIL do
-            output(P->info.idPC, P->info.namaPC, P->info.tipe, P->info.tarifPerJam, P->info.status)
-            P = P->next
+        K = L.first
+        while K != NIL do
+            output(K->info.idPC, K->info.namaPC, K->info.tipe, K->info.tarifPerJam, K->info.status)
+            K = K->next
         endwhile
     endif
 Endprocedure
