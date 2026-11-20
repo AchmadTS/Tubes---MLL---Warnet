@@ -134,3 +134,100 @@ Algoritma
         endwhile
     endif
 Endprocedure
+
+
+// --- OPERASI CHILD (BILLING) ---
+
+Function createBilling(idBilling, namaUser, jamMulai : string, durasi : integer) -> Adr_Billing
+Kamus
+    B : Adr_Billing
+Algoritma
+    allocate(B)
+    B->info.idBilling  = idBilling
+    B->info.namaUser   = namaUser
+    B->info.jamMulai   = jamMulai
+    B->info.durasi     = durasi
+    B->info.totalBayar = 0
+    B->next            = NIL
+    return B
+Endfunction
+
+Function findBilling(K : Adr_Komputer, idBilling : string) -> Adr_Billing
+Kamus
+    B : Adr_Billing
+Algoritma
+    if K == NIL then
+        return NIL
+    else
+        B = K->nextBilling
+        while B != NIL and B->info.idBilling != idBilling do
+            B = B->next
+        endwhile
+        return B
+    endif
+Endfunction
+
+Procedure insertBilling(In/Out K : Adr_Komputer, In B : Adr_Billing)
+Kamus
+    Q : Adr_Billing
+Algoritma
+    if K == NIL then
+        output("Komputer tidak ditemukan")
+    else if findBilling(K, B->info.idBilling) != NIL then
+        output("ID Billing sudah terdaftar pada komputer ini")
+    else
+        B->info.totalBayar = B->info.durasi * K->info.tarifPerJam
+        if K->nextBilling == NIL then
+            K->nextBilling = B
+        else
+            Q = K->nextBilling
+            while Q->next != NIL do
+                Q = Q->next
+            endwhile
+            Q->next = B
+        endif
+    endif
+Endprocedure
+
+Procedure deleteBilling(In/Out K : Adr_Komputer, In idBilling : string)
+Kamus
+    B, prec : Adr_Billing
+Algoritma
+    if K == NIL then
+        output("Komputer tidak ditemukan")
+    else
+        B = findBilling(K, idBilling)
+        if B == NIL then
+            output("Data billing tidak ditemukan")
+        else
+            if B == K->nextBilling then
+                K->nextBilling = B->next
+            else
+                prec = K->nextBilling
+                while prec->next != B do
+                    prec = prec->next
+                endwhile
+                prec->next = B->next
+            endif
+            B->next = NIL
+            deallocate(B)
+        endif
+    endif
+Endprocedure
+
+Procedure printBilling(K : Adr_Komputer)
+Kamus
+    B : Adr_Billing
+Algoritma
+    if K == NIL then
+        output("Komputer tidak ditemukan")
+    else if K->nextBilling == NIL then
+        output("Belum ada riwayat billing pada komputer ini")
+    else
+        B = K->nextBilling
+        while B != NIL do
+            output(B->info.idBilling, B->info.namaUser, B->info.jamMulai, B->info.durasi, B->info.totalBayar)
+            B = B->next
+        endwhile
+    endif
+Endprocedure
