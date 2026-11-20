@@ -231,3 +231,22 @@ Algoritma
         endwhile
     endif
 Endprocedure
+
+
+// --- OPERASI PRINT KESELURUHAN ---
+
+Procedure printAll(L : List_Warnet)
+Kamus
+    K : Adr_Komputer
+Algoritma
+    if L.first == NIL then
+        output("Data warnet kosong")
+    else
+        K = L.first
+        while K != NIL do
+            output(K->info.idPC, K->info.namaPC, K->info.tipe, K->info.tarifPerJam, K->info.status)
+            printBilling(K)
+            K = K->next
+        endwhile
+    endif
+Endprocedure
