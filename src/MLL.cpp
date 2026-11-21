@@ -45,6 +45,7 @@ void insertKomputer(List_Warnet &L, Adr_Komputer K) {
             }
             Q->next = K;
         }
+        cout << "Komputer [" << K->info.idPC << "] berhasil ditambahkan!" << endl; // FIXED
     }
 }
 
