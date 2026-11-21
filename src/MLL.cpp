@@ -74,6 +74,7 @@ void deleteKomputer(List_Warnet &L, string idPC) {
         }
         K->next = nullptr;
         delete K;
+        cout << "Komputer [" << idPC << "] beserta seluruh riwayat billing-nya berhasil dihapus!" << endl;
     }
 }
 
@@ -133,6 +134,7 @@ void insertBilling(Adr_Komputer &K, Adr_Billing B) {
             }
             Q->next = B;
         }
+        cout << "Billing [" << B->info.idBilling << "] ditambahkan ke [" << K->info.idPC << "] | Total Bayar: Rp" << B->info.totalBayar << endl;
     }
 }
 
@@ -157,6 +159,7 @@ void deleteBilling(Adr_Komputer &K, string idBilling) {
             }
             B->next = nullptr;
             delete B;
+            cout << "Billing [" << idBilling << "] pada [" << K->info.idPC << "] berhasil dihapus!" << endl;
         }
     }
 }
