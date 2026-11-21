@@ -124,21 +124,63 @@ int main() {
 
             case 6: {
                 cout << "--- CARI BILLING PADA KOMPUTER ---" << endl;
+                cout << "Masukkan ID PC: ";
+                cin >> idPC;
+
+                K = findKomputer(L, idPC);
+                if (K == nullptr) {
+                    cout << "Komputer tidak ditemukan!" << endl;
+                }
+                cout << "Masukkan ID Billing: ";
+                cin >> idBilling;
+
+                B = findBilling(K, idBilling);
+                if (B == nullptr) {
+                    cout << "Billing tidak ditemukan!" << endl;
+                } else {
+                    cout << "Ditemukan: [" << B->info.idBilling << "] "
+                         << B->info.namaUser << " | "
+                         << B->info.jamMulai << " | "
+                         << B->info.durasi << " jam | Total Bayar: Rp"
+                         << B->info.totalBayar
+                         << endl;
+                }
                 break;
             }
 
             case 7: {
                 cout << "--- HAPUS BILLING DARI KOMPUTER ---" << endl;
+                cout << "Masukkan ID PC: ";
+                cin >> idPC;
+
+                K = findKomputer(L, idPC);
+                if (K == nullptr) {
+                    cout << "Komputer tidak ditemukan!" << endl;
+                }
+
+                cout << "Masukkan ID Billing di " << K->info.idPC << " yang ingin dihapus: ";
+                cin >> idBilling;
+                deleteBilling(K, idBilling);
                 break;
             }
 
             case 8: {
                 cout << "--- RIWAYAT BILLING KOMPUTER ---" << endl;
+                cout << "Masukkan ID PC: ";
+                cin >> idPC;
+
+                K = findKomputer(L, idPC);
+                if (K == nullptr) {
+                    cout << "Komputer tidak ditemukan!" << endl;
+                } else {
+                    printBilling(K);
+                }
                 break;
             }
 
             case 9: {
                 cout << "--- SELURUH DATA WARNET ---" << endl;
+                printAll(L);
                 break;
             }
 

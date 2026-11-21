@@ -169,11 +169,16 @@ void printBilling(Adr_Komputer K) {
     if (K == nullptr) {
         cout << "Komputer tidak ditemukan!" << endl;
     } else if (K->nextBilling == nullptr) {
-        cout << "Belum ada riwayat billing pada komputer ini" << endl;
+        cout << "      Belum ada riwayat billing pada komputer ini" << endl;
     } else {
         B = K->nextBilling;
         while (B != nullptr) {
-            cout << "   ID Billing: " << B->info.idBilling << " | " << B->info.namaUser << " | " << B->info.jamMulai << " | " << B->info.durasi << " Jam | Rp" << B->info.totalBayar << endl;
+            if (B->next == nullptr) {
+                cout << " +--";
+            } else {
+                cout << " |--";
+            }
+            cout << " ID Billing: " << B->info.idBilling << " | " << B->info.namaUser << " | " << B->info.jamMulai << " | " << B->info.durasi << " Jam | Rp" << B->info.totalBayar << endl;
             B = B->next;
         }
     }
@@ -189,6 +194,7 @@ void printAll(List_Warnet L) {
         while (K != nullptr) {
             cout << "[" << K->info.idPC << "] " << K->info.namaPC << " | " << K->info.tipe << " | Rp" << K->info.tarifPerJam << "/jam | Status: " << K->info.status << endl;
             printBilling(K);
+            cout << endl;
             K = K->next;
         }
     }
