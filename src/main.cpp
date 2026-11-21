@@ -130,6 +130,7 @@ int main() {
                 K = findKomputer(L, idPC);
                 if (K == nullptr) {
                     cout << "Komputer tidak ditemukan!" << endl;
+                    break;
                 }
                 cout << "Masukkan ID Billing: ";
                 cin >> idBilling;
@@ -156,6 +157,7 @@ int main() {
                 K = findKomputer(L, idPC);
                 if (K == nullptr) {
                     cout << "Komputer tidak ditemukan!" << endl;
+                    break;
                 }
 
                 cout << "Masukkan ID Billing di " << K->info.idPC << " yang ingin dihapus: ";
