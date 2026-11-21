@@ -86,7 +86,7 @@ Endfunction
 Procedure insertKomputer(In/Out L : List_Warnet, In K : Adr_Komputer)
 {
     I.S. : Terdefinisi List_Warnet L yang mungkin kosong, dan K sudah dialokasi
-    F.S. : K ditambahkan sebagai elemen terakhir pada L jika idPC belum terdaftar, jika sudah terdaftar, tampilkan pesan "ID Komputer sudah terdaftar"
+    F.S. : K ditambahkan sebagai elemen terakhir pada L dan tampilkan pesan berhasil jika idPC belum terdaftar, jika sudah terdaftar, tampilkan pesan "ID Komputer sudah terdaftar"
 }
 Kamus
     Q : Adr_Komputer
@@ -103,13 +103,14 @@ Algoritma
             endwhile
             Q->next = K
         endif
+        output("Komputer [", K->info.idPC, "] berhasil ditambahkan!")
     endif
 Endprocedure
 
 Procedure deleteKomputer(In/Out L : List_Warnet, In idPC : string)
 {
     I.S. : Terdefinisi List_Warnet L yang mungkin kosong, dan idPC
-    F.S. : Jika idPC ditemukan, seluruh node billing pada komputer tersebut beserta node komputernya dihapus dan didealokasi, jika tidak ditemukan, tampilkan pesan "Komputer tidak ditemukan"
+    F.S. : Jika idPC ditemukan, seluruh node billing pada komputer tersebut beserta node komputernya dihapus, didealokasi, dan tampilkan pesan berhasil, jika tidak ditemukan, tampilkan pesan "Komputer tidak ditemukan!"
 }
 Kamus
     K, prec : Adr_Komputer
@@ -117,7 +118,7 @@ Kamus
 Algoritma
     K = findKomputer(L, idPC)
     if K == NIL then
-        output("Komputer tidak ditemukan")
+        output("Komputer tidak ditemukan!")
     else
         while K->nextBilling != NIL do
             B = K->nextBilling
@@ -137,6 +138,7 @@ Algoritma
         endif
         K->next = NIL
         deallocate(K)
+        output("Komputer [", idPC, "] beserta seluruh riwayat billing-nya berhasil dihapus!")
     endif
 Endprocedure
 
@@ -202,15 +204,15 @@ Endfunction
 Procedure insertBilling(In/Out K : Adr_Komputer, In B : Adr_Billing)
 {
     I.S. : Terdefinisi K yang mungkin NIL, dan B sudah dialokasi
-    F.S. : Jika K != NIL dan idBilling belum terdaftar, totalBayar B dihitung (durasi * tarifPerJam) dan B ditambahkan sebagai elemen terakhir pada list billing K, jika tidak valid, tampilkan pesan error
+    F.S. : Jika K != NIL dan idBilling belum terdaftar, totalBayar B dihitung (durasi * tarifPerJam), B ditambahkan sebagai elemen terakhir pada list billing K, dan tampilkan pesan berhasil beserta totalBayar, jika tidak valid, tampilkan pesan error
 }
 Kamus
     Q : Adr_Billing
 Algoritma
     if K == NIL then
-        output("Komputer tidak ditemukan")
+        output("Komputer tidak ditemukan!")
     else if findBilling(K, B->info.idBilling) != NIL then
-        output("ID Billing sudah terdaftar pada komputer ini")
+        output("ID Billing sudah terdaftar pada komputer ini!")
     else
         B->info.totalBayar = B->info.durasi * K->info.tarifPerJam
         if K->nextBilling == NIL then
@@ -222,23 +224,24 @@ Algoritma
             endwhile
             Q->next = B
         endif
+        output("Billing [", B->info.idBilling, "] ditambahkan ke [", K->info.idPC, "] | Total Bayar: Rp", B->info.totalBayar)
     endif
 Endprocedure
 
 Procedure deleteBilling(In/Out K : Adr_Komputer, In idBilling : string)
 {
     I.S. : Terdefinisi K yang mungkin NIL, dan idBilling
-    F.S. : Jika K != NIL dan idBilling ditemukan, node billing tersebut dihapus dari list billing K dan didealokasi, jika tidak ditemukan, tampilkan pesan error
+    F.S. : Jika K != NIL dan idBilling ditemukan, node billing tersebut dihapus dari list billing K, didealokasi, dan tampilkan pesan berhasil, jika tidak ditemukan, tampilkan pesan error
 }
 Kamus
     B, prec : Adr_Billing
 Algoritma
     if K == NIL then
-        output("Komputer tidak ditemukan")
+        output("Komputer tidak ditemukan!")
     else
         B = findBilling(K, idBilling)
         if B == NIL then
-            output("Data billing tidak ditemukan")
+            output("Data billing tidak ditemukan!")
         else
             if B == K->nextBilling then
                 K->nextBilling = B->next
@@ -251,6 +254,7 @@ Algoritma
             endif
             B->next = NIL
             deallocate(B)
+            output("Billing [", idBilling, "] pada [", K->info.idPC, "] berhasil dihapus!")
         endif
     endif
 Endprocedure
