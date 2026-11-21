@@ -1,4 +1,7 @@
 #include "ADT.h"
+#include <iostream>
+
+using namespace std;
 
 // -------------- Operation Wajib MLL 1 to N --------------
 
@@ -6,9 +9,8 @@
 void createList(List_Warnet &L) {
     L.first = nullptr;
 }
-Adr_Komputer createKomputer(string idPC, string namaPC,
-                            string tipe, int tarifPerJam,
-                            string status) {
+
+Adr_Komputer createKomputer(string idPC, string namaPC, string tipe, int tarifPerJam, string status) {
     Adr_Komputer K = new Elm_Komputer;
     K->info.idPC = idPC;
     K->info.namaPC = namaPC;
@@ -19,14 +21,15 @@ Adr_Komputer createKomputer(string idPC, string namaPC,
     K->nextBilling = nullptr;
     return K;
 }
+
 Adr_Komputer findKomputer(List_Warnet L, string idPC) {
-    Adr_Komputer K;
-    K = L.first;
+    Adr_Komputer K = L.first;
     while (K != nullptr && K->info.idPC != idPC) {
         K = K->next;
     }
     return K;
 }
+
 // Insert Last
 void insertKomputer(List_Warnet &L, Adr_Komputer K) {
     Adr_Komputer Q;
@@ -44,11 +47,12 @@ void insertKomputer(List_Warnet &L, Adr_Komputer K) {
         }
     }
 }
+
 void deleteKomputer(List_Warnet &L, string idPC) {
     Adr_Komputer K, prec;
     Adr_Billing B;
 
-    K = findKomputer(L, K->info.idPC);
+    K = findKomputer(L, idPC);
     if (K == nullptr) {
         cout << "Komputer tidak ditemukan!" << endl;
     } else {
@@ -71,6 +75,7 @@ void deleteKomputer(List_Warnet &L, string idPC) {
         delete K;
     }
 }
+
 void printKomputer(List_Warnet L) {
     Adr_Komputer K;
     if (L.first == nullptr) {
@@ -78,21 +83,14 @@ void printKomputer(List_Warnet L) {
     } else {
         K = L.first;
         while (K != nullptr) {
-            cout << K->info.idPC
-                 << K->info.namaPC
-                 << K->info.tipe
-                 << K->info.tarifPerJam
-                 << K->info.status
-                 << endl;
+            cout << "[" << K->info.idPC << "] " << K->info.namaPC << " | " << K->info.tipe << " | Rp" << K->info.tarifPerJam << "/jam | Status: " << K->info.status << endl;
             K = K->next;
         }
     }
 }
 
-
 // 2. Operasi Child (Billing)
-Adr_Billing createBilling(string idBilling, string namaUser,
-                          string jamMulai, int durasi) {
+Adr_Billing createBilling(string idBilling, string namaUser, string jamMulai, int durasi) {
     Adr_Billing B = new Elm_Billing;
     B->info.idBilling = idBilling;
     B->info.namaUser = namaUser;
@@ -102,6 +100,7 @@ Adr_Billing createBilling(string idBilling, string namaUser,
     B->next = nullptr;
     return B;
 }
+
 Adr_Billing findBilling(Adr_Komputer K, string idBilling) {
     Adr_Billing B;
     if (K == nullptr) {
@@ -114,6 +113,7 @@ Adr_Billing findBilling(Adr_Komputer K, string idBilling) {
         return B;
     }
 }
+
 // Insert Last
 void insertBilling(Adr_Komputer &K, Adr_Billing B) {
     Adr_Billing Q;
@@ -122,9 +122,9 @@ void insertBilling(Adr_Komputer &K, Adr_Billing B) {
     } else if (findBilling(K, B->info.idBilling) != nullptr) {
         cout << "ID Billing sudah terdaftar pada komputer ini!" << endl;
     } else {
-        B->info.totalBayar = B->info.totalBayar * K->info.tarifPerJam; // Menghitung total bayar billing. (totalBayar * tarifPerJam komputer)
+        B->info.totalBayar = B->info.durasi * K->info.tarifPerJam;
         if (K->nextBilling == nullptr) {
-            K->nextBilling = 0;
+            K->nextBilling = B;
         } else {
             Q = K->nextBilling;
             while (Q->next != nullptr) {
@@ -134,7 +134,8 @@ void insertBilling(Adr_Komputer &K, Adr_Billing B) {
         }
     }
 }
-void deleteBiling(Adr_Komputer &K, string idBilling) {
+
+void deleteBilling(Adr_Komputer &K, string idBilling) {
     Adr_Billing B, prec;
 
     if (K == nullptr) {
@@ -144,9 +145,9 @@ void deleteBiling(Adr_Komputer &K, string idBilling) {
         if (B == nullptr) {
             cout << "Data billing tidak ditemukan!" << endl;
         } else {
-            if (B == K->nextBilling) {          // Billing berada diawal
+            if (B == K->nextBilling) {          // Billing berada di awal
                 K->nextBilling = B->next;
-            } else {                            // Biling berada di tengah
+            } else {                            // Billing berada di tengah/akhir
                 prec = K->nextBilling;
                 while (prec->next != B) {
                     prec = prec->next;
@@ -158,24 +159,21 @@ void deleteBiling(Adr_Komputer &K, string idBilling) {
         }
     }
 }
+
 void printBilling(Adr_Komputer K) {
     Adr_Billing B;
     if (K == nullptr) {
         cout << "Komputer tidak ditemukan!" << endl;
+    } else if (K->nextBilling == nullptr) {
+        cout << "Belum ada riwayat billing pada komputer ini" << endl;
     } else {
         B = K->nextBilling;
         while (B != nullptr) {
-            cout << B->info.idBilling
-                 << B->info.namaUser
-                 << B->info.jamMulai
-                 << B->info.durasi
-                 << B->info.totalBayar
-                 << endl;
+            cout << "   ID Billing: " << B->info.idBilling << " | " << B->info.namaUser << " | " << B->info.jamMulai << " | " << B->info.durasi << " Jam | Rp" << B->info.totalBayar << endl;
             B = B->next;
         }
     }
 }
-
 
 // 3. Operasi Print Keseluruhan
 void printAll(List_Warnet L) {
@@ -185,12 +183,7 @@ void printAll(List_Warnet L) {
     } else {
         K = L.first;
         while (K != nullptr) {
-            cout << K->info.idPC
-                 << K->info.namaPC
-                 << K->info.tipe
-                 << K->info.tarifPerJam
-                 << K->info.status
-                 << endl;
+            cout << "[" << K->info.idPC << "] " << K->info.namaPC << " | " << K->info.tipe << " | Rp" << K->info.tarifPerJam << "/jam | Status: " << K->info.status << endl;
             printBilling(K);
             K = K->next;
         }
